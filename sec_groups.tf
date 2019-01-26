@@ -5,7 +5,7 @@ variable "name" {}
 resource "aws_security_group" "jumphost" {
     name = "${var.name}-jumphost-sg"
     description = "Jumphost/Bastion servers"
-    vpc_id = "${aws_vpc.hashicorp_vpc.id}"
+    vpc_id = "${data.terraform_remote_state.vpc.aws_vpc.hashicorp_vpc.id}"
 }
 
 resource "aws_security_group_rule" "jh-ssh" {
@@ -30,7 +30,7 @@ resource "aws_security_group_rule" "jh-egress" {
 resource "aws_security_group" "web" {
     name = "${var.name}-web-sg"
     description = "private webserver"
-    vpc_id = "${aws_vpc.hashicorp_vpc.id}"
+    vpc_id = "${data.terraform_remote_state.vpc.aws_vpc.hashicorp_vpc.id}"
 }
 
 resource "aws_security_group_rule" "web-http" {
@@ -73,7 +73,7 @@ resource "aws_security_group_rule" "web-egress" {
 resource "aws_security_group" "db" {
     name = "${var.name}-db-sg"
     description = "private db server"
-    vpc_id = "${aws_vpc.hashicorp_vpc.id}"
+    vpc_id = "${data.terraform_remote_state.vpc.aws_vpc.hashicorp_vpc.id}"
 }
 
 resource "aws_security_group_rule" "db-ssh" {
@@ -96,7 +96,7 @@ resource "aws_security_group_rule" "db-egress" {
 resource "aws_security_group" "elb" {
     name = "${var.name}-elb-sg"
     description = "elasic loadbalancer"
-    vpc_id = "${aws_vpc.hashicorp_vpc.id}"
+    vpc_id = "${data.terraform_remote_state.vpc.aws_vpc.hashicorp_vpc.id}"
 }
 
 resource "aws_security_group_rule" "elb-http" {
@@ -127,7 +127,7 @@ resource "aws_security_group_rule" "elb-egress" {
 resource "aws_security_group" "nat" {
     name = "${var.name}-nat-sg"
     description = "nat instance"
-    vpc_id = "${aws_vpc.hashicorp_vpc.id}"
+    vpc_id = "${data.terraform_remote_state.vpc.aws_vpc.hashicorp_vpc.id}"
 }
 
 resource "aws_security_group_rule" "nat-http" {
