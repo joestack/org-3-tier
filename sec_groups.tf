@@ -1,7 +1,4 @@
 
-variable "name" {}
-
-
 resource "aws_security_group" "jumphost" {
     name = "${var.name}-jumphost-sg"
     description = "Jumphost/Bastion servers"
