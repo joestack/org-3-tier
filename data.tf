@@ -1,7 +1,8 @@
 data "terraform_remote_state" "sec_group" {
   backend = "atlas"
+  workspace = 
   config {
-    name = "joestack/org-3tier-sec"
+    name = "JoeStack/org-3tier-sec"
   }
 }
 
