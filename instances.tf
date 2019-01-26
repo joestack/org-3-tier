@@ -4,7 +4,7 @@ resource "aws_instance" "web_nodes" {
   instance_type               = "${var.instance_type}"
   subnet_id                   = "${element(aws_subnet.web_subnet.*.id, count.index + 1)}"
   associate_public_ip_address = "false"
-  vpc_security_group_ids      = ["${aws_security_group.web.id}"]
+  vpc_security_group_ids      = ["${data.terraform_remote_state.sec_group.aws_security_group.web.id}"]
   key_name                    = "${var.key_name}"
   
 
@@ -24,7 +24,7 @@ resource "aws_instance" "db_nodes" {
   instance_type               = "${var.instance_type}"
   subnet_id                   = "${element(aws_subnet.db_subnet.*.id, count.index + 1)}"
   associate_public_ip_address = "false"
-  vpc_security_group_ids      = ["${aws_security_group.db.id}"]
+  vpc_security_group_ids      = ["${data.terraform_remote_state.sec_group.aws_security_group.db.id}"]
   key_name                    = "${var.key_name}"
   
 

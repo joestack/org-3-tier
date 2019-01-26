@@ -189,7 +189,7 @@ resource "aws_instance" "nat" {
   instance_type               = "t2.micro"
   subnet_id                   = "${aws_subnet.dmz_subnet.id}"
   associate_public_ip_address = "true"
-  vpc_security_group_ids      = ["${aws_security_group.nat.id}"]
+  vpc_security_group_ids      = ["${data.terraform_remote_state.sec_group.aws_security_group.nat.id}"]
   key_name                    = "${var.key_name}"
   source_dest_check           = false
 
