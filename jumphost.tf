@@ -7,7 +7,7 @@ resource "aws_instance" "jumphost" {
   subnet_id                   = "${aws_subnet.dmz_subnet.id}"
   private_ip                  = "${cidrhost(aws_subnet.dmz_subnet.cidr_block, 10)}"
   associate_public_ip_address = "true"
-  vpc_security_group_ids      = ["${data.terraform_remote_state.sec_group.aws_security_group.jumphost.id}"]
+  vpc_security_group_ids      = ["${data.terraform_remote_state.sec_group.jumphost_id}"]
   key_name                    = "${var.key_name}"
   
     user_data = <<-EOF
