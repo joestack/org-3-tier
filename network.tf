@@ -37,12 +37,12 @@ data "aws_ami" "nat_instance" {
 # Internet Gateways and route table
 
 resource "aws_internet_gateway" "igw" {
-  vpc_id = "${data.terraform_remote_state.sec_group.hashicorp_vpc.id}"
+  vpc_id = "${data.terraform_remote_state.sec_group.aws_vpc.hashicorp_vpc.id}"
 
 }
 
 resource "aws_route_table" "rtb" {
-  vpc_id = "${data.terraform_remote_state.sec_group.hashicorp_vpc.id}"
+  vpc_id = "${data.terraform_remote_state.sec_group.aws_vpc.hashicorp_vpc.id}"
 
   route {
     cidr_block = "0.0.0.0/0"
@@ -59,7 +59,7 @@ resource "aws_route_table" "rtb" {
 # nat route table
 
 resource "aws_route_table" "rtb-nat" {
-    vpc_id = "${data.terraform_remote_state.sec_group.hashicorp_vpc.id}"
+    vpc_id = "${data.terraform_remote_state.sec_group.aws_vpc.hashicorp_vpc.id}"
 
     route {
         cidr_block = "0.0.0.0/0"
@@ -107,7 +107,7 @@ resource "aws_route_table_association" "rtb-web" {
 # subnet public
 
 resource "aws_subnet" "dmz_subnet" {
-  vpc_id                  = "${data.terraform_remote_state.sec_group.hashicorp_vpc.id}"
+  vpc_id                  = "${data.terraform_remote_state.sec_group.aws_vpc.hashicorp_vpc.id}"
   cidr_block              = "${cidrsubnet(var.network_address_space, 8, 1)}"
   map_public_ip_on_launch = "true"
   availability_zone       = "${data.aws_availability_zones.available.names[0]}"
@@ -124,7 +124,7 @@ resource "aws_subnet" "dmz_subnet" {
 resource "aws_subnet" "pub_web_subnet" {
   count                   = "${local.mod_az}"
   cidr_block              = "${cidrsubnet(var.network_address_space, 8, count.index + 10)}"
-  vpc_id                  = "${data.terraform_remote_state.sec_group.hashicorp_vpc.id}"
+  vpc_id                  = "${data.terraform_remote_state.sec_group.aws_vpc.hashicorp_vpc.id}"
   map_public_ip_on_launch = "true"
   availability_zone       = "${data.aws_availability_zones.available.names[count.index % local.mod_az]}"
 
@@ -140,7 +140,7 @@ resource "aws_subnet" "pub_web_subnet" {
 
 resource "aws_subnet" "db_subnet" {
   count                   = "${var.db_subnet_count}"
-  vpc_id                  = "${data.terraform_remote_state.sec_group.hashicorp_vpc.id}"
+  vpc_id                  = "${data.terraform_remote_state.sec_group.aws_vpc.hashicorp_vpc.id}"
   cidr_block              = "${cidrsubnet(var.network_address_space, 8, count.index + 50)}"
   map_public_ip_on_launch = "false"
   availability_zone       = "${data.aws_availability_zones.available.names[count.index % local.mod_az]}"
@@ -155,7 +155,7 @@ resource "aws_subnet" "db_subnet" {
 resource "aws_subnet" "web_subnet" {
   count                   = "${var.web_subnet_count}"
   cidr_block              = "${cidrsubnet(var.network_address_space, 8, count.index + 20)}"
-  vpc_id                  = "${data.terraform_remote_state.sec_group.hashicorp_vpc.id}"
+  vpc_id                  = "${data.terraform_remote_state.sec_group.aws_vpc.hashicorp_vpc.id}"
   map_public_ip_on_launch = "false"
   #availability_zone       = "${data.aws_availability_zones.available.names[count.index % local.mod_az]}"
   availability_zone       = "${data.aws_availability_zones.available.names[count.index % local.mod_az]}"
