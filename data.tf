@@ -6,7 +6,7 @@ data "terraform_remote_state" "sec_group" {
     #token        = "${var.team_token}"
 
     workspaces {
-      name = "org-3tier-sec"
+      name = "org-3-tier-sec"
     }
   }
 }
